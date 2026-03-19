@@ -4,7 +4,7 @@
 Deploy a real-time headcount system using a top-down camera and a model accelerated by the Ethos-U55 NPU. All inference runs locally on-device — no cloud or external storage.
 
 ## Goals
-- >95% headcount accuracy
+- ≥95% headcount accuracy
 - ≥15 FPS inference
 - Zero-Cloud: all processing on-device, no data transmitted externally
 
