@@ -1,0 +1,24 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Training outputs
+runs/
+outputs/
+
+# Large artifacts
+*.pt
+*.onnx
+*.tflite
+*.mp4
+*.mov
+
+# Local raw data
+data/
+
+# Jupyter
+.ipynb_checkpoints/
