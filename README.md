@@ -4,13 +4,26 @@
 Deploy a real-time headcount system using a top-down camera and a model accelerated by the Ethos-U55 NPU. All inference runs locally on-device — no cloud or external storage.
 
 ## Goals
+
 - ≥95% headcount accuracy
 - ≥15 FPS inference
 - Zero-Cloud: all processing on-device, no data transmitted externally
 
 ---
 
+## Repo Structure
+
+```text
+Nuvoton-Team-2/
+├── data/         # dataset structure, metadata, and data instructions
+├── ml/           # training, local inference, and conversion scripts
+└── deployment/   # export / Vela / board integration notes and scripts
+```
+
+---
+
 ## Resources
+
 - [ML_YOLO Repo](https://github.com/OpenNuvoton/ML_YOLO) — training, export, and quantization pipeline
 - [ML_M55M1_SampleCode](https://github.com/OpenNuvoton/ML_M55M1_SampleCode) — sample M55M1 ML application reference
 - [M55M1 BSP](https://github.com/OpenNuvoton/M55M1BSP) — board support package for lower-level firmware integration
@@ -19,7 +32,7 @@ Deploy a real-time headcount system using a top-down camera and a model accelera
 
 ---
 
-## Environment Setup
+## Quick Start
 
 ### 1. Create and activate virtual environment
 
@@ -55,68 +68,16 @@ python -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
 
 ---
 
-## ML Training Setup (YOLOv8)
+## See also
 
-### Dataset Format
-The training dataset must follow YOLO object detection format:
-
-```text
-dataset/
-├── dataset.yaml
-├── images/
-│   ├── train/
-│   └── val/
-└── labels/
-    ├── train/
-    └── val/
-```
-
-- One class: `person`
-- Each image has a matching `.txt` label file
-- YOLO label format:
-```text
-class x_center y_center width height
-```
-
-### Example `dataset.yaml`
-
-```yaml
-path: .
-
-train: dataset/images/train
-val: dataset/images/val
-
-names:
-  0: person
-```
-
-### Convert Hugging Face dataset to local YOLO format
-
-```bash
-python scripts/convert_hf_overhead_dataset.py
-```
-
-### Training Command
-Run from the project root:
-
-```bash
-python repos/ML_YOLO/yolov8_ultralytics/dg_train.py \
-  --model-cfg repos/ML_YOLO/yolov8_ultralytics/ultralytics/cfg/models/v8/relu6-yolov8.yaml \
-  --weights yolov8n.pt \
-  --data dataset/dataset.yaml \
-  --imgsz 192 \
-  --epochs 20 \
-  --batch 8 \
-  --device cpu \
-  --project runs/train \
-  --name overhead_20ep
-```
+- `data/README.md` for dataset format and labeling expectations
+- `ml/README.md` for dataset conversion, training, and local inference
+- `deployment/README.md` for export / deployment notes
 
 ---
 
-## Notes
-- Using YOLOv8 ReLU6 for better Ethos-U55 compatibility
-- Counting is done by the number of detected person bounding boxes
-- The model config file `relu6-yolov8.yaml` should be edited to use `nc: 1`
-- `people_count_demo.py` is a local baseline inference script for testing on a laptop; it is not the board deployment pipeline
-- Initial local training at 192x192 completed successfully and produced a usable `best.pt` checkpoint
+## Current Status
+
+- Local YOLOv8 ReLU6 training pipeline is working
+- Initial training on overhead-person dataset at 192×192 completed successfully
+- Local inference demo supports image/video testing with baseline vs custom checkpoints

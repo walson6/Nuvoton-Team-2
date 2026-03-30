@@ -3,11 +3,11 @@ import cv2
 import torch
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 # ===== Choose input =====
-# INPUT_PATH = PROJECT_ROOT / "data/raw_photos/test.png"
-INPUT_PATH = PROJECT_ROOT / "data/raw_videos/test.mp4"
+# INPUT_PATH = PROJECT_ROOT / "local_inputs/test.png"
+INPUT_PATH = PROJECT_ROOT / "local_inputs/test.mp4"
 
 # ===== Choose model =====
 USE_CUSTOM_MODEL = False

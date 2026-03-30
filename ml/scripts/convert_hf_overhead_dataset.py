@@ -2,7 +2,8 @@ from pathlib import Path
 from datasets import load_dataset
 import random
 
-OUT_ROOT = Path("dataset")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+OUT_ROOT = PROJECT_ROOT / "data"
 TRAIN_RATIO = 0.9
 SEED = 42
 
