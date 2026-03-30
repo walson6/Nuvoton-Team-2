@@ -16,9 +16,20 @@ outputs/
 *.tflite
 *.mp4
 *.mov
+*.npy
 
 # Local raw data
 data/
+
+# Dataset contents (keep structure files only)
+dataset/images/train/*
+!dataset/images/train/.gitkeep
+dataset/images/val/*
+!dataset/images/val/.gitkeep
+dataset/labels/train/*
+!dataset/labels/train/.gitkeep
+dataset/labels/val/*
+!dataset/labels/val/.gitkeep
 
 # Jupyter
 .ipynb_checkpoints/

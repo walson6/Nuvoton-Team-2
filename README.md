@@ -15,6 +15,7 @@ Deploy a real-time headcount system using a top-down camera and a model accelera
 - [ML_M55M1_SampleCode](https://github.com/OpenNuvoton/ML_M55M1_SampleCode) — sample M55M1 ML application reference
 - [M55M1 BSP](https://github.com/OpenNuvoton/M55M1BSP) — board support package for lower-level firmware integration
 - [NuEdgeWise](https://github.com/OpenNuvoton/NuEdgeWise)
+- [bdanko/overhead-person-detection](https://huggingface.co/datasets/bdanko/overhead-person-detection) — overhead/top-down detection dataset used for initial training tests
 
 ---
 
@@ -30,8 +31,10 @@ source .venv/bin/activate
 ### 2. Install dependencies
 
 ```bash
-pip install --upgrade pip
-pip install torch torchvision torchaudio ultralytics opencv-python numpy matplotlib pyyaml
+pip install --upgrade pip setuptools
+pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1
+pip install ultralytics opencv-python matplotlib pyyaml datasets pillow
+pip install numpy==1.26.4 py-cpuinfo seaborn
 ```
 
 ### 3. Clone required repositories
@@ -87,6 +90,12 @@ names:
   0: person
 ```
 
+### Convert Hugging Face dataset to local YOLO format
+
+```bash
+python scripts/convert_hf_overhead_dataset.py
+```
+
 ### Training Command
 Run from the project root:
 
@@ -96,11 +105,11 @@ python repos/ML_YOLO/yolov8_ultralytics/dg_train.py \
   --weights yolov8n.pt \
   --data dataset/dataset.yaml \
   --imgsz 192 \
-  --epochs 50 \
+  --epochs 20 \
   --batch 8 \
   --device cpu \
   --project runs/train \
-  --name elevator_v1
+  --name overhead_20ep
 ```
 
 ---
@@ -109,5 +118,5 @@ python repos/ML_YOLO/yolov8_ultralytics/dg_train.py \
 - Using YOLOv8 ReLU6 for better Ethos-U55 compatibility
 - Counting is done by the number of detected person bounding boxes
 - The model config file `relu6-yolov8.yaml` should be edited to use `nc: 1`
-- A `test/` split can be added later for final evaluation
 - `people_count_demo.py` is a local baseline inference script for testing on a laptop; it is not the board deployment pipeline
+- Initial local training at 192x192 completed successfully and produced a usable `best.pt` checkpoint
